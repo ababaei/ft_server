@@ -1,13 +1,20 @@
 server{
-	listen 80 default_server;
-	listen [::]:80 default_server;
+	listen 80;
+	server_name localhost;
+	root /var/www/localhost;
 
-	root /var/www;
+	#listen 80 default_server;
+	#listen [::]:80 default_server;
 
 	index index.html;
 
-	server_name ft_server;
 	location / {
 		try_files $uri $uri/ =404;
+		autoindex on;
+	}
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+		fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
 	}
 }
